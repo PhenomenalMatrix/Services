@@ -9,7 +9,7 @@ import kotlinx.coroutines.*
 
 class MyService: Service() {
 
-    private val coroutineScope = CoroutineScope(Dispatchers.Main)
+    private val coroutineScope = CoroutineScope(Dispatchers.Default)
 
     override fun onCreate() {
         super.onCreate()
@@ -18,8 +18,9 @@ class MyService: Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         log("onStart")
+        val start = intent?.getIntExtra(EXTRA_START,0) ?: 0
         coroutineScope.launch {
-            for (i in 0 until 100){
+            for (i in start until start + 100){
              delay(1000)
                 log("Timer $i")
             }
@@ -43,8 +44,13 @@ class MyService: Service() {
     }
 
     companion object{
-        fun newIntent(context: Context): Intent{
-            return Intent(context,MyService::class.java)
+
+        //Параметры для нашего интента (что бы в цикле задавать число с какого начинать)
+        private const val EXTRA_START = "start"
+        fun newIntent(context: Context,start: Int): Intent{
+            return Intent(context,MyService::class.java).apply {
+                putExtra(EXTRA_START, start)
+            }
         }
     }
 
@@ -54,4 +60,5 @@ class MyService: Service() {
     //Поумолчанию код внутри сервисов выполняется на главном потоке
     //Service должны быть зарегист в манифесте
     //Чтобы запустить сервис, нужно вызвать метод startService в активити и передать Intent в качестве параметра
+    //Начиная с 26 апи (8 версия андр) ввели ограничения: если хочешь выполнять работу на фоне, необходимо уведолять пользователя о работе на фоне
 }
