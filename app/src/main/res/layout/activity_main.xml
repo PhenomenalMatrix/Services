@@ -11,10 +11,10 @@
     >
 
     <Button
-        android:id="@+id/serviceBtn"
+        android:id="@+id/stopServiceBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="service"
+        android:text="Stop service"
         />
     <Button
         android:id="@+id/foregroundServiceBtn"

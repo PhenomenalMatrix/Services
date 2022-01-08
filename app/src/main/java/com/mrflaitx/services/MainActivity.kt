@@ -3,6 +3,7 @@ package com.mrflaitx.services
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -20,9 +21,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        binding.serviceBtn.setOnClickListener {
-            // Запуск сервиса
-            startService(MyService.newIntent(this,25))
+        binding.stopServiceBtn.setOnClickListener {
+            //Отключение снаружи сервиса с передачей интента
+            stopService(Intent(this,MyForegroundService::class.java))
         }
 
         binding.foregroundServiceBtn.setOnClickListener {
